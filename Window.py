@@ -26,8 +26,10 @@ class Window:
 
         self.satzLabel = ttk.Label(self.root, text="Satz:")
         self.satzLabel.grid(column=0, row=0)
+
         self.satzEntry = ttk.Entry(self.root)
         self.satzEntry.grid(column=1, row=0)
+        self.satzEntry.focus()
 
         self.wortLabel = ttk.Label(self.root, text="Wort:")
         self.wortLabel.grid(column=0, row=1)
@@ -83,6 +85,7 @@ class Window:
         self.wortValue = None
         self.reset()
         self.emptyEntry()
+        self.satzEntry.focus()
 
     def emptyEntry(self):
         self.satzEntry.delete(0,"end")
@@ -139,7 +142,7 @@ class Window:
         return li
 
     def isOver(self):
-        return self.suchtextposition == len(self.satzValue) - len(self.wortValue)+1
+        return self.suchtextposition - self.currentRand == len(self.satzValue) - len(self.wortValue)+1
 
     def getAlleLabels(self):
         li = []

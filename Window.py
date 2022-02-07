@@ -31,7 +31,7 @@ class Window:
         self.satzEntry.grid(column=1, row=0)
         self.satzEntry.focus()
 
-        self.wortLabel = ttk.Label(self.root, text="Wort:")
+        self.wortLabel = ttk.Label(self.root, text="Pattern:")
         self.wortLabel.grid(column=0, row=1)
 
         self.wortEntry = ttk.Entry(self.root)

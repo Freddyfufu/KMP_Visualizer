@@ -24,7 +24,7 @@ class Window:
         self.satzValue = None
         self.wortValue = None
 
-        self.satzLabel = ttk.Label(self.root, text="Satz:")
+        self.satzLabel = ttk.Label(self.root, text="Sentence:")
         self.satzLabel.grid(column=0, row=0)
 
         self.satzEntry = ttk.Entry(self.root)
@@ -38,7 +38,7 @@ class Window:
         self.wortEntry.grid(column=1, row=1)
 
         self.inputButton = ttk.Button(self.root, command=lambda: self.evalInput(
-            [self.reset, self.showRandtabelle, self.initWidgets]), text="Bestätigen")
+            [self.reset, self.showRandtabelle, self.initWidgets]), text="Confirm")
         self.inputButton.grid(column=1, row=2)
 
         self.randtabelleLabel = ttk.Label(self.root)
@@ -59,9 +59,9 @@ class Window:
         for widget in self.root.winfo_children():
             if isinstance(widget, ttk.Label):
                 widget.destroy()
-        self.satzLabel = ttk.Label(self.root, text="Satz:")
+        self.satzLabel = ttk.Label(self.root, text="Sentence:")
         self.satzLabel.grid(column=0, row=0)
-        self.wortLabel = ttk.Label(self.root, text="Wort:")
+        self.wortLabel = ttk.Label(self.root, text="Pattern:")
         self.wortLabel.grid(column=0, row=1)
         self.randtabelleLabel = ttk.Label(self.root)
         self.randtabelleLabel.grid(row=3, column=1)
@@ -104,26 +104,26 @@ class Window:
             listener()
 
     def showRandtabelle(self):
-        self.randtabelleLabel.config(text="Randtabelle:")
+        self.randtabelleLabel.config(text="Prefix Table:")
         self.randtabelleValueLabel.config(text="\n".join([str(a) for a in self.kmp.getRandtabelle()]))
 
     def initWidgets(self):
         ### aktueller muster part
-        self.vergleicheLabel = ttk.Label(self.root,text=f"Vergleiche: {self.vergleiche}").grid(row=2,column=2)
-        self.suchLabel = ttk.Label(self.root, text="Suchtext: ").grid(row=0, column=2)
-        self.musterLabel = ttk.Label(self.root, text="Muster: ").grid(row=1, column=2)
+        self.vergleicheLabel = ttk.Label(self.root,text=f"Comparisons: {self.vergleiche}").grid(row=2,column=2)
+        self.suchLabel = ttk.Label(self.root, text="Sentence: ").grid(row=0, column=2)
+        self.musterLabel = ttk.Label(self.root, text="Pattern: ").grid(row=1, column=2)
         self.suchtextLabels = [ttk.Label(self.root, text=self.satzValue[a]).grid(row=0, column=a + 3) for a in
                                range(len(self.satzValue))]
         self.musterLabels = [ttk.Label(self.root,background="blue" if a < self.musterposition else "", text=self.wortValue[a]).grid(row=1, column=a + 3 +self.suchtextposition - self.currentRand) for a in
                              range(len(self.wortValue))]
-        self.weiterButton = ttk.Button(self.root, text="Weiter", command=self.doStep if not self.isOver() else self.zuende)
+        self.weiterButton = ttk.Button(self.root, text="Step", command=self.doStep if not self.isOver() else self.zuende)
         self.weiterButton.grid(row=3, column=2)
         self.currentMusterPart = "".join([a.cget("text") for a in self.getBlueLabels()])
         self.randMatches = len(self.currentMusterPart)
 
 
     def zuende(self):
-        ttk.Label(self.root,text="ZUENDE").grid(row=5,column=2)
+        ttk.Label(self.root,text="FINISHED").grid(row=5,column=2)
         self.weiterButton["state"] = "disabled"
 
     def isWordFound(self):
@@ -188,8 +188,6 @@ class Window:
             suchtextpositionCache = self.suchtextposition
             while isMatched:
                 if cacheWord == self.wortValue:
-                    # print(f"Ende Index: {suchtextpositionCache-1}")
-                    print(f"Vergleiche: {vergleiche}")
                     return True
                 if self.satzValue[suchtextpositionCache] == self.wortValue[self.musterposition]:
                     matches += 1
